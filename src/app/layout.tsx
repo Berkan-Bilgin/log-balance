@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
+import { ThemeProvider } from "next-themes";
+import DarkModeToggle from "@/components/DarkModeToggle";
+import { Navbar } from "@/components/Navbar";
 import "./globals.css";
 
 const geistSans = localFont({
@@ -24,11 +27,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+    <html suppressHydrationWarning>
+      <head />
+      <body>
+        <ThemeProvider attribute="class">
+          {/* <DarkModeToggle /> */}
+          <Navbar />
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );

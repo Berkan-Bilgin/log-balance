@@ -79,7 +79,7 @@ export const TransactionList = () => {
   }
 
   return (
-    <table className="w-full h-full border-collapse border border-gray-300">
+    <table className="w-full h-full border-collapse border border-gray-300 dark:text-black">
       <thead>
         {table.getHeaderGroups().map((headerGroup) => (
           <tr key={headerGroup.id} className="bg-blue-400 text-left">
