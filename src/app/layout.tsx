@@ -3,6 +3,9 @@ import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import DarkModeToggle from "@/components/DarkModeToggle";
 import { Navbar } from "@/components/Navbar";
+import { ClientProvider } from "./ClientProvider";
+import { store } from "@/store/store";
+
 import "./globals.css";
 
 const geistSans = localFont({
@@ -30,11 +33,13 @@ export default function RootLayout({
     <html suppressHydrationWarning>
       <head />
       <body>
-        <ThemeProvider attribute="class">
-          {/* <DarkModeToggle /> */}
-          <Navbar />
-          {children}
-        </ThemeProvider>
+        <ClientProvider>
+          <ThemeProvider attribute="class">
+            {/* <DarkModeToggle /> */}
+            <Navbar />
+            {children}
+          </ThemeProvider>
+        </ClientProvider>
       </body>
     </html>
   );
