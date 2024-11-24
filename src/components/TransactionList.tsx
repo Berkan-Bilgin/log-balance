@@ -1,6 +1,11 @@
 "use client";
 import React, { useEffect } from "react";
 
+import { useDispatch, useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { setTransactions } from "@/store/transactionSlice";
+import { mockTransactions, Transaction } from "@/data/mockData";
+
 import {
   GroupingState,
   useReactTable,
@@ -13,10 +18,11 @@ import {
   flexRender,
 } from "@tanstack/react-table";
 
-import { mockTransactions } from "@/data/mockData";
-import { Transaction } from "@/data/mockData";
-
 export const TransactionList = () => {
+  const dispatch = useDispatch();
+  const transactions = useSelector(
+    (state: RootState) => state.transactions.transactions
+  );
   const columns = React.useMemo<ColumnDef<Transaction>[]>(
     () => [
       {
@@ -50,17 +56,16 @@ export const TransactionList = () => {
     []
   );
 
-  const [data, setData] = React.useState<Transaction[]>([]);
+  useEffect(() => {
+    // Mock veriyi store'a yükle
+    dispatch(setTransactions(mockTransactions));
+  }, [dispatch]);
+
+  // const [data, setData] = React.useState<Transaction[]>([]);
   const [grouping, setGrouping] = React.useState<GroupingState>([]);
 
-  // Veri yükleme işlemi için useEffect kullanımı
-  useEffect(() => {
-    // Mock veriyi state'e yükle
-    setData(mockTransactions);
-  }, []);
-
   const table = useReactTable({
-    data,
+    data: transactions,
     columns,
     state: {
       grouping,
@@ -74,7 +79,7 @@ export const TransactionList = () => {
     debugTable: true,
   });
 
-  if (!data.length) {
+  if (!transactions.length) {
     return <div>Loading...</div>;
   }
 

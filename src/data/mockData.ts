@@ -11,7 +11,7 @@ export const mockTransactions: Transaction[] = [
   {
     id: "1",
     description: "Maaş",
-    amount: 5000,
+    amount: 6000,
     type: "income",
     category: "Çalışma Geliri",
     date: "2024-11-01",
