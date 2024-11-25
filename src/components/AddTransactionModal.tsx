@@ -19,6 +19,7 @@ interface AddTransactionModalProps {
     amount: number;
     type: "income" | "expense";
     category: string;
+    date: string;
   }) => void;
 }
 
@@ -31,6 +32,7 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
   const [amount, setAmount] = useState("");
   const [type, setType] = useState<"income" | "expense">("income");
   const [category, setCategory] = useState("");
+  const [date, setDate] = useState("");
 
   const handleAdd = () => {
     onAddTransaction({
@@ -38,12 +40,14 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
       amount: parseFloat(amount),
       type,
       category,
+      date,
     });
     onClose(); // Modal'ı kapat
     setDescription("");
     setAmount("");
     setType("income");
     setCategory("");
+    setDate("");
   };
 
   return (
@@ -76,6 +80,12 @@ export const AddTransactionModal: React.FC<AddTransactionModalProps> = ({
             placeholder="Category"
             value={category}
             onChange={(e) => setCategory(e.target.value)}
+          />
+          <Input
+            placeholder="Date (YYYY-MM-DD)" // Tarih formatı için bilgi
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)} // Tarih state'i güncelle
           />
         </div>
         <DialogFooter>
