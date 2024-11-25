@@ -14,6 +14,7 @@ import { RootState } from "@/store/store";
 import { TransactionChart } from "@/components/TransactionChart";
 import { PieChart } from "@/components/PieChart";
 import { PieChartIncome } from "@/components/PieChartIncome";
+import { ExpensePieChart } from "@/components/ExpensePieChart";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -48,6 +49,7 @@ const Home = () => {
       <TransactionChart />
       <PieChart />
       <PieChartIncome />
+      <ExpensePieChart />
     </>
   );
 };
