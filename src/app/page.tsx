@@ -11,6 +11,10 @@ import {
 import { addTransaction } from "@/store/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
+import { TransactionChart } from "@/components/TransactionChart";
+import { PieChart } from "@/components/PieChart";
+import { PieChartIncome } from "@/components/PieChartIncome";
+import { ExpensePieChart } from "@/components/ExpensePieChart";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -42,6 +46,10 @@ const Home = () => {
         onClose={() => setIsModalOpen(false)}
         onAddTransaction={handleAddTransaction}
       />
+      <TransactionChart />
+      <PieChart />
+      <PieChartIncome />
+      <ExpensePieChart />
     </>
   );
 };
