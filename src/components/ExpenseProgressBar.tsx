@@ -61,7 +61,7 @@ export const ExpenseProgressBar: React.FC<{ transactions: Transaction[] }> = ({
 
       {categories.map((category) => {
         const spent = expenseData[category];
-        const limit = categoryLimits[category] || 10000; // Varsayılan limit 100,000
+        const limit = categoryLimits[category] || 25000; // Varsayılan limit 100,000
         const percentage = Math.min((spent / limit) * 100, 100);
 
         return (
