@@ -6,7 +6,7 @@ import { Moon, Sun } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
-  const { theme, setTheme } = useTheme();
+  const { resolvedTheme, setTheme } = useTheme();
 
   return (
     <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 border-b z-50">
@@ -23,7 +23,9 @@ export function Navbar() {
               size="icon"
               aria-label="Toggle Theme"
               className="mr-6"
-              onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+              onClick={() =>
+                setTheme(resolvedTheme === "dark" ? "light" : "dark")
+              }
             >
               <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
               <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
