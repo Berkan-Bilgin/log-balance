@@ -33,12 +33,12 @@ export const ExpenseProgressBar: React.FC<{ transactions: Transaction[] }> = ({
   // Harcamaların %80'i aştığı kategorileri kontrol et
   const criticalExpenses = categories.filter((category) => {
     const spent = expenseData[category];
-    const limit = categoryLimits[category] || 100000; // Varsayılan limit 100,000
+    const limit = categoryLimits[category] || 25000; // Varsayılan limit 100,000
     return spent / limit >= 0.8;
   });
 
   const handleEditLimit = (category: string) => {
-    const currentLimit = categoryLimits[category] || 100000;
+    const currentLimit = categoryLimits[category] || 25000;
     const newLimit = parseInt(
       prompt(`Yeni limit belirleyin (${category}):`, currentLimit.toString()) ||
         currentLimit.toString(),
