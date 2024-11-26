@@ -14,7 +14,7 @@ import { RootState } from "@/store/store";
 import { TransactionChart } from "@/components/TransactionChart";
 import { PieChart } from "@/components/PieChart";
 import { PieChartIncome } from "@/components/PieChartIncome";
-import { ExpensePieChart } from "@/components/ExpensePieChart";
+import { PieChartExpense } from "@/components/PieChartExpense";
 import dayjs from "dayjs";
 
 const Home = () => {
@@ -41,20 +41,22 @@ const Home = () => {
           <PieChartIncome />
         </div>
         <div>
-          <ExpensePieChart />
+          <PieChartExpense />
         </div>
       </div>
 
       <hr />
 
-      <TransactionsHeader onAddClick={() => setIsModalOpen(true)} />
-      <TransactionList />
-      <AddTransactionModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAddTransaction={handleAddTransaction}
-      />
-      <TransactionChart />
+      <div className="container mx-auto">
+        <TransactionsHeader onAddClick={() => setIsModalOpen(true)} />
+        <TransactionList />
+        <AddTransactionModal
+          isOpen={isModalOpen}
+          onClose={() => setIsModalOpen(false)}
+          onAddTransaction={handleAddTransaction}
+        />
+        <TransactionChart />
+      </div>
     </>
   );
 };

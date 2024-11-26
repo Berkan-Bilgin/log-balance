@@ -3,39 +3,37 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
+import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useTheme } from "next-themes";
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-export const PieChartIncome: React.FC = () => {
-  const { theme } = useTheme(); // Mevcut temayı al
+export const PieChartExpense: React.FC = () => {
+  const { theme } = useTheme();
   const transactions = useSelector(
     (state: RootState) => state.transactions.transactions
   );
 
-  // Gelirleri kategorilere göre gruplandır
-  const incomeData = transactions
-    .filter((transaction) => transaction.type === "income")
+  // Giderleri kategorilere göre gruplandır
+  const expenseData = transactions
+    .filter((transaction) => transaction.type === "expense")
     .reduce(
       (acc, transaction) => {
         acc[transaction.category] =
-          (acc[transaction.category] || 0) + transaction.amount;
+          (acc[transaction.category] || 0) + Math.abs(transaction.amount);
         return acc;
       },
       {} as Record<string, number>
     );
 
-  const categories = Object.keys(incomeData);
-  const amounts = Object.values(incomeData);
+  const categories = Object.keys(expenseData);
+  const amounts = Object.values(expenseData);
 
   // Dinamik olarak farklı renkler üret
   const backgroundColors = generateDistinctColors(categories.length);
-  const borderColors = backgroundColors.map(
-    (color) => color.replace(/(\d+)%\)/, "90%)") // Kenar çizgileri için daha koyu bir ton
-  );
+  const borderColors = generateDistinctColors(categories.length, true);
 
   // Chart.js veri yapılandırması
   const data = {
@@ -45,7 +43,7 @@ export const PieChartIncome: React.FC = () => {
         data: amounts,
         backgroundColor: backgroundColors,
         borderColor: borderColors,
-        borderWidth: 1,
+        borderWidth: 2,
       },
     ],
   };
@@ -56,7 +54,7 @@ export const PieChartIncome: React.FC = () => {
       legend: {
         position: "top" as const,
         labels: {
-          color: theme === "dark" ? "#FFFFFF" : "#000000", // Dark modda beyaz, normalde siyah
+          color: theme === "dark" ? "#FFFFFF" : "#000000",
         },
       },
       tooltip: {
@@ -65,31 +63,33 @@ export const PieChartIncome: React.FC = () => {
         },
       },
       datalabels: {
-        color: "#FFFFFF", // Etiketlerin rengini beyaz yapar
+        color: "#FFFFFF",
         font: {
           weight: "bold" as const,
-          size: 14, // Yazı boyutunu ayarlayın
+          size: 14,
         },
-        formatter: (value: number) => `${value}₺`, // Etiket formatı
+        formatter: (value: number) => `${value}₺`,
       },
     },
   };
 
   return (
     <div className="w-full mx-auto mt-8">
-      <h2 className="text-center text-xl font-bold mb-4 text-blue-500">
-        Gelir Dağılımı (Kategorilere Göre)
+      <h2 className="text-center text-xl font-bold mb-4 text-red-500">
+        Gider Dağılımı (Kategorilere Göre)
       </h2>
       <Pie data={data} options={options} />
     </div>
   );
 };
 
-// Eşit aralıklı farklı renkler üretmek için fonksiyon
-const generateDistinctColors = (numColors: number): string[] => {
+const generateDistinctColors = (
+  numColors: number,
+  isLighter: boolean = false
+): string[] => {
   const colors = [];
-  const saturation = 70; // Renklerin canlılık seviyesi
-  const lightness = 50; // Renklerin parlaklık seviyesi
+  const saturation = 20; // Renklerin canlılık seviyesi
+  const lightness = isLighter ? 65 : 45; // Daha açık veya daha koyu tonlar için lightness ayarı
 
   for (let i = 0; i < numColors; i++) {
     const hue = (360 / numColors) * i; // Eşit aralıklarla hue değerleri
