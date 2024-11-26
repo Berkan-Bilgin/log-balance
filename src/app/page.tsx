@@ -1,21 +1,20 @@
 "use client";
-import React from "react";
+
+import React, { useRef } from "react";
 import { TransactionList } from "@/components/TransactionList";
 import { TransactionsHeader } from "@/components/TransactionsHeader";
 import { AddTransactionModal } from "@/components/AddTransactionModal";
 import { useState } from "react";
-import {
-  mockTransactions as initialTransactions,
-  Transaction,
-} from "@/data/mockData";
 import { addTransaction } from "@/store/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { TransactionChart } from "@/components/TransactionChart";
-import { PieChart } from "@/components/PieChart";
-import { PieChartIncome } from "@/components/PieChartIncome";
-import { ExpensePieChart } from "@/components/ExpensePieChart";
-import dayjs from "dayjs";
+import { ExpenseProgressBar } from "@/components/ExpenseProgressBar";
+import { v4 as uuidv4 } from "uuid";
+import { FilteredCharts } from "@/components/FilteredCharts";
+import { Download } from "lucide-react";
+import html2canvas from "html2canvas";
+import jsPDF from "jspdf";
 
 const Home = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -24,29 +23,73 @@ const Home = () => {
     (state: RootState) => state.transactions.transactions
   );
 
-  const handleAddTransaction = (newTransaction: Omit<Transaction, "id">) => {
-    const newTransactionWithId: Transaction = {
-      ...newTransaction,
-      id: (transactions.length + 1).toString(), // Otomatik ID
-    };
+  const pageRef = useRef<HTMLDivElement>(null);
 
-    // Redux store'a yeni işlem ekle
-    dispatch(addTransaction(newTransactionWithId));
+  const handleDownloadPdf = async () => {
+    if (!pageRef.current) return;
+
+    const canvas = await html2canvas(pageRef.current, {
+      backgroundColor: null,
+      scale: 1,
+    });
+    const imgData = canvas.toDataURL("image/png");
+    const pdf = new jsPDF({
+      orientation: "p",
+      unit: "mm",
+      format: "a4",
+      compress: true, // Sıkıştırmayı etkinleştir
+    });
+    const pdfWidth = pdf.internal.pageSize.getWidth();
+    const pdfHeight = (canvas.height * pdfWidth) / canvas.width;
+
+    pdf.addImage(imgData, "PNG", 0, 0, pdfWidth, pdfHeight);
+    pdf.save("page.pdf");
   };
 
   return (
     <>
-      <TransactionsHeader onAddClick={() => setIsModalOpen(true)} />
-      <TransactionList />
-      <AddTransactionModal
-        isOpen={isModalOpen}
-        onClose={() => setIsModalOpen(false)}
-        onAddTransaction={handleAddTransaction}
-      />
-      <TransactionChart />
-      <PieChart />
-      <PieChartIncome />
-      <ExpensePieChart />
+      {/* Tüm bileşenleri kapsayan bir container */}
+      <div ref={pageRef}>
+        <div className="container mx-auto">
+          <ExpenseProgressBar transactions={transactions} />
+        </div>
+
+        <hr className="my-4" />
+
+        <div className="container mx-auto">
+          <FilteredCharts />
+        </div>
+
+        <hr />
+
+        <div className="container mx-auto py-4">
+          <TransactionsHeader onAddClick={() => setIsModalOpen(true)} />
+          <TransactionList />
+          <AddTransactionModal
+            isOpen={isModalOpen}
+            onClose={() => setIsModalOpen(false)}
+            onAddTransaction={(newTransaction) =>
+              dispatch(
+                addTransaction({
+                  ...newTransaction,
+                  id: uuidv4(),
+                })
+              )
+            }
+          />
+        </div>
+      </div>
+
+      {/* PDF İndir butonu */}
+      <div className="fixed bottom-4 right-4">
+        <button
+          onClick={handleDownloadPdf}
+          className="flex items-center px-4 py-2 bg-gray-800 dark:bg-white dark:text-black text-white rounded shadow hover:bg-gray-600 transition"
+        >
+          <Download className="w-5 h-5 mr-2" />
+          PDF İndir
+        </button>
+      </div>
     </>
   );
 };

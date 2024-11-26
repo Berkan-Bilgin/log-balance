@@ -23,8 +23,8 @@ export default {
           foreground: "hsl(var(--popover-foreground))",
         },
         primary: {
-          DEFAULT: "hsl(var(--primary))",
-          foreground: "hsl(var(--primary-foreground))",
+          DEFAULT: "#3b82f6", // Blue 500 rengini burada tanımladık
+          foreground: "#ffffff", // Varsayılan foreground beyaz
         },
         secondary: {
           DEFAULT: "hsl(var(--secondary))",

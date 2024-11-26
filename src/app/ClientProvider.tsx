@@ -2,8 +2,9 @@
 
 import React from "react";
 import { Provider } from "react-redux";
-import { store } from "@/store/store";
+import { store, persistor } from "@/store/store";
 import { ThemeProvider } from "next-themes";
+import { PersistGate } from "redux-persist/integration/react";
 
 interface ClientProviderProps {
   children: React.ReactNode;
@@ -12,7 +13,9 @@ interface ClientProviderProps {
 export const ClientProvider: React.FC<ClientProviderProps> = ({ children }) => {
   return (
     <Provider store={store}>
-      <ThemeProvider attribute="class">{children}</ThemeProvider>
+      <PersistGate loading={null} persistor={persistor}>
+        <ThemeProvider attribute="class">{children}</ThemeProvider>
+      </PersistGate>
     </Provider>
   );
 };

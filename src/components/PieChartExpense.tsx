@@ -10,37 +10,37 @@ import { AlertCircle } from "lucide-react"; // Lucide React'ten ikon
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-export const PieChartIncome: React.FC<{ transactions: Transaction[] }> = ({
-  transactions,
-}) => {
-  const { theme } = useTheme(); // Mevcut temayı al
+export const PieChartExpense: React.FC<{
+  transactions: Transaction[];
+}> = ({ transactions }) => {
+  const { theme } = useTheme();
 
-  // Gelirleri kategorilere göre gruplandır
-  const incomeData = transactions
-    .filter((transaction) => transaction.type === "income")
+  // Giderleri kategorilere göre gruplandır
+  const expenseData = transactions
+    .filter((transaction) => transaction.type === "expense")
     .reduce(
       (acc, transaction) => {
         acc[transaction.category] =
-          (acc[transaction.category] || 0) + transaction.amount;
+          (acc[transaction.category] || 0) + Math.abs(transaction.amount);
         return acc;
       },
       {} as Record<string, number>
     );
 
-  const categories = Object.keys(incomeData);
-  const amounts = Object.values(incomeData);
+  const categories = Object.keys(expenseData);
+  const amounts = Object.values(expenseData);
 
   // Eğer veri yoksa hata mesajı göster
   if (categories.length === 0 || amounts.length === 0) {
     return (
-      <div className="w-full mx-auto mt-8 text-center p-4 border border-blue-300 rounded bg-blue-50 dark:bg-blue-900">
+      <div className="w-full mx-auto mt-8 text-center p-4 border border-red-300 rounded bg-red-50 dark:bg-red-900">
         <div className="flex flex-col items-center">
-          <AlertCircle className="w-8 h-8 text-blue-500 dark:text-blue-300 mb-2" />
-          <h2 className="text-xl font-bold text-blue-600 dark:text-blue-300">
+          <AlertCircle className="w-8 h-8 text-red-500 dark:text-red-300 mb-2" />
+          <h2 className="text-xl font-bold text-red-600 dark:text-red-300">
             Veri Bulunamadı
           </h2>
-          <p className="text-blue-500 dark:text-blue-200">
-            Gösterilecek gelir verisi bulunamadı. Lütfen işlem ekleyin.
+          <p className="text-red-500 dark:text-red-200">
+            Gösterilecek gider verisi bulunamadı. Lütfen işlem ekleyin.
           </p>
         </div>
       </div>
@@ -49,9 +49,7 @@ export const PieChartIncome: React.FC<{ transactions: Transaction[] }> = ({
 
   // Dinamik olarak farklı renkler üret
   const backgroundColors = generateDistinctColors(categories.length);
-  const borderColors = backgroundColors.map(
-    (color) => color.replace(/(\d+)%\)/, "90%)") // Kenar çizgileri için daha koyu bir ton
-  );
+  const borderColors = generateDistinctColors(categories.length, true);
 
   // Chart.js veri yapılandırması
   const data = {
@@ -61,7 +59,7 @@ export const PieChartIncome: React.FC<{ transactions: Transaction[] }> = ({
         data: amounts,
         backgroundColor: backgroundColors,
         borderColor: borderColors,
-        borderWidth: 1,
+        borderWidth: 2,
       },
     ],
   };
@@ -72,7 +70,7 @@ export const PieChartIncome: React.FC<{ transactions: Transaction[] }> = ({
       legend: {
         position: "top" as const,
         labels: {
-          color: theme === "dark" ? "#FFFFFF" : "#000000", // Dark modda beyaz, normalde siyah
+          color: theme === "dark" ? "#FFFFFF" : "#000000",
         },
       },
       tooltip: {
@@ -81,20 +79,20 @@ export const PieChartIncome: React.FC<{ transactions: Transaction[] }> = ({
         },
       },
       datalabels: {
-        color: "#FFFFFF", // Etiketlerin rengini beyaz yapar
+        color: "#FFFFFF",
         font: {
           weight: "bold" as const,
-          size: 14, // Yazı boyutunu ayarlayın
+          size: 14,
         },
-        formatter: (value: number) => `${value}₺`, // Etiket formatı
+        formatter: (value: number) => `${value}₺`,
       },
     },
   };
 
   return (
     <div className="w-full mx-auto mt-8">
-      <h2 className="text-center text-xl font-bold mb-4 text-green-400">
-        Gelir Dağılımı (Kategorilere Göre)
+      <h2 className="text-center text-xl font-bold mb-4 text-red-500 dark:text-red-400">
+        Gider Dağılımı (Kategorilere Göre)
       </h2>
       <Pie data={data} options={options} />
     </div>
@@ -102,10 +100,13 @@ export const PieChartIncome: React.FC<{ transactions: Transaction[] }> = ({
 };
 
 // Eşit aralıklı farklı renkler üretmek için fonksiyon
-const generateDistinctColors = (numColors: number): string[] => {
+const generateDistinctColors = (
+  numColors: number,
+  isLighter: boolean = false
+): string[] => {
   const colors = [];
-  const saturation = 70; // Renklerin canlılık seviyesi
-  const lightness = 50; // Renklerin parlaklık seviyesi
+  const saturation = 20; // Renklerin canlılık seviyesi
+  const lightness = isLighter ? 65 : 45; // Daha açık veya daha koyu tonlar için lightness ayarı
 
   for (let i = 0; i < numColors; i++) {
     const hue = (360 / numColors) * i; // Eşit aralıklarla hue değerleri

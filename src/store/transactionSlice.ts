@@ -4,10 +4,12 @@ import { mockTransactions } from "@/data/mockData";
 
 interface TransactionState {
   transactions: Transaction[];
+  categoryLimits: Record<string, number>; // Kategori başına limit
 }
 
 const initialState: TransactionState = {
-  transactions: mockTransactions, // Başlangıç durumu
+  transactions: mockTransactions,
+  categoryLimits: {}, // Başlangıçta boş
 };
 
 const transactionSlice = createSlice({
@@ -19,21 +21,11 @@ const transactionSlice = createSlice({
     },
     addTransaction(state, action: PayloadAction<Transaction>) {
       state.transactions.push(action.payload);
-      console.log("wut");
     },
     removeTransaction(state, action: PayloadAction<string>) {
       state.transactions = state.transactions.filter(
         (transaction) => transaction.id !== action.payload
       );
-    },
-    removeLastTransaction(state) {
-      console.log("mahmut");
-      console.log(state.transactions);
-      console.log([...state.transactions]);
-
-      if (state.transactions.length > 0) {
-        state.transactions.pop(); // Son elemanı kaldır
-      }
     },
     updateTransaction(
       state,
@@ -43,13 +35,18 @@ const transactionSlice = createSlice({
       const index = state.transactions.findIndex(
         (transaction) => transaction.id === id
       );
-
       if (index !== -1) {
         state.transactions[index] = {
           ...state.transactions[index],
           ...changes,
         };
       }
+    },
+    setCategoryLimit(
+      state,
+      action: PayloadAction<{ category: string; limit: number }>
+    ) {
+      state.categoryLimits[action.payload.category] = action.payload.limit;
     },
   },
 });
@@ -58,8 +55,8 @@ export const {
   setTransactions,
   addTransaction,
   removeTransaction,
-  removeLastTransaction,
   updateTransaction,
+  setCategoryLimit,
 } = transactionSlice.actions;
 
 export default transactionSlice.reducer;
