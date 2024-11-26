@@ -2,12 +2,8 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import {
-  setTransactions,
-  updateTransaction,
-  removeTransaction,
-} from "@/store/transactionSlice";
-import { mockTransactions, Transaction } from "@/data/mockData";
+import { updateTransaction, removeTransaction } from "@/store/transactionSlice";
+import { Transaction } from "@/data/mockData";
 import dayjs from "dayjs";
 import {
   useReactTable,

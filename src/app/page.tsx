@@ -8,7 +8,6 @@ import { useState } from "react";
 import { addTransaction } from "@/store/transactionSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { TransactionChart } from "@/components/TransactionChart";
 import { ExpenseProgressBar } from "@/components/ExpenseProgressBar";
 import { v4 as uuidv4 } from "uuid";
 import { FilteredCharts } from "@/components/FilteredCharts";
