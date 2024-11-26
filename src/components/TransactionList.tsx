@@ -74,7 +74,7 @@ export const TransactionList = () => {
               type="text"
               value={editedRow.category || ""}
               onChange={(e) => handleInputChange("category", e.target.value)}
-              className="border text-center w-full px-2 py-1"
+              className="border dark:text-white text-center w-full px-2 py-1"
             />
           ) : (
             info.getValue()
@@ -94,7 +94,7 @@ export const TransactionList = () => {
                   : (info.getValue() as string)
               }
               onChange={(e) => handleInputChange("date", e.target.value)}
-              className="border text-center w-full px-2 py-1"
+              className="border dark:text-white text-center w-full px-2 py-1"
             />
           ) : info.getValue() ? (
             dayjs(info.getValue() as string).format("DD/MM/YYYY")
@@ -116,7 +116,7 @@ export const TransactionList = () => {
                   e.target.value as "income" | "expense"
                 )
               }
-              className="border text-center w-full px-2 py-1"
+              className="border dark:text-white text-center w-full px-2 py-1"
             >
               <option value="income">Gelir</option>
               <option value="expense">Gider</option>
@@ -139,7 +139,7 @@ export const TransactionList = () => {
               type="text"
               value={editedRow.description || ""}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              className="border text-center w-full px-2 py-1"
+              className="border dark:text-white text-center w-full px-2 py-1"
             />
           ) : (
             info.getValue()
@@ -157,7 +157,7 @@ export const TransactionList = () => {
               onChange={(e) =>
                 handleInputChange("amount", Number(e.target.value))
               }
-              className="border text-center w-full px-2 py-1"
+              className="border text-center dark:text-white w-full px-2 py-1"
             />
           ) : (
             `${info.getValue()}₺`
