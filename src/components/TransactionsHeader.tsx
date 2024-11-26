@@ -1,7 +1,6 @@
 "use client";
 import React from "react";
 import { AddTransactionButton } from "./AddTransactionButton";
-import { RemoveTransactionButton } from "./RemoveTransactionButton";
 
 interface TransactionsHeaderProps {
   onAddClick: () => void;
