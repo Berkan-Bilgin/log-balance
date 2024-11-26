@@ -173,20 +173,20 @@ export const TransactionList = () => {
         cell: (info) =>
           !info.row.getIsGrouped() ? (
             editingRowId === info.row.original?.id ? (
-              <div className="flex justify-center space-x-4 ">
+              <div className="flex justify-center space-x-4">
                 <button
                   onClick={handleSaveClick}
                   className="px-2 py-1 bg-green-500 text-white rounded flex items-center"
                 >
                   <Save className="w-4 h-4 mr-1" />
-                  Kaydet
+                  <span className="hidden lg:inline">Kaydet</span>
                 </button>
                 <button
                   onClick={handleCancelClick}
                   className="px-2 py-1 bg-red-500 text-white rounded flex items-center"
                 >
                   <X className="w-4 h-4 mr-1" />
-                  İptal
+                  <span className="hidden lg:inline">İptal</span>
                 </button>
               </div>
             ) : (
@@ -198,7 +198,7 @@ export const TransactionList = () => {
                   className="px-2 py-1 bg-blue-500 text-white rounded flex items-center"
                 >
                   <Edit className="w-4 h-4 mr-1" />
-                  Düzenle
+                  <span className="hidden lg:inline">Düzenle</span>
                 </button>
                 <button
                   onClick={() =>
@@ -207,7 +207,7 @@ export const TransactionList = () => {
                   className="px-2 py-1 bg-gray-500 text-white rounded flex items-center"
                 >
                   <Trash className="w-4 h-4 mr-1" />
-                  Sil
+                  <span className="hidden lg:inline">Sil</span>
                 </button>
               </div>
             )
@@ -216,10 +216,6 @@ export const TransactionList = () => {
     ],
     [editedRow, editingRowId]
   );
-
-  if (!transactions.length) {
-    return <>Loading...</>;
-  }
 
   const table = useReactTable({
     data: transactions,
@@ -234,84 +230,93 @@ export const TransactionList = () => {
   });
 
   return (
-    <table className="table-fixed w-full h-full border-collapse border border-gray-300 dark:text-black">
-      <thead>
-        {table.getHeaderGroups().map((headerGroup) => (
-          <tr key={headerGroup.id} className="bg-blue-400 text-left">
-            {headerGroup.headers.map((header) => (
-              <th
-                key={header.id}
-                colSpan={header.colSpan}
-                className="px-4 py-2 border border-gray-300 text-center align-middle"
-              >
-                {header.isPlaceholder ? null : (
-                  <div>
-                    {header.column.getCanGroup() && (
-                      <button
-                        onClick={header.column.getToggleGroupingHandler()}
-                        style={{
-                          cursor: "pointer",
-                        }}
-                      >
-                        {header.column.getIsGrouped()
-                          ? `🛑 (${header.column.getGroupedIndex()})`
-                          : "👊"}
-                      </button>
+    <div>
+      {transactions.length === 0 ? (
+        <div className="text-center mt-4 text-gray-500">Veri bulunamadı.</div>
+      ) : (
+        <table className="table-fixed w-full h-full border-collapse border border-gray-300 dark:text-black">
+          <thead>
+            {table.getHeaderGroups().map((headerGroup) => (
+              <tr key={headerGroup.id} className="bg-blue-400 text-left">
+                {headerGroup.headers.map((header) => (
+                  <th
+                    key={header.id}
+                    colSpan={header.colSpan}
+                    className="px-4 py-2 border border-gray-300 text-center align-middle"
+                  >
+                    {header.isPlaceholder ? null : (
+                      <div>
+                        {header.column.getCanGroup() && (
+                          <button
+                            onClick={header.column.getToggleGroupingHandler()}
+                            style={{
+                              cursor: "pointer",
+                            }}
+                          >
+                            {header.column.getIsGrouped()
+                              ? `🛑 (${header.column.getGroupedIndex()})`
+                              : "👊"}
+                          </button>
+                        )}
+                        {flexRender(
+                          header.column.columnDef.header,
+                          header.getContext()
+                        )}
+                      </div>
                     )}
-                    {flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-                  </div>
-                )}
-              </th>
+                  </th>
+                ))}
+              </tr>
             ))}
-          </tr>
-        ))}
-      </thead>
-      <tbody>
-        {table.getRowModel().rows.map((row) => (
-          <tr
-            key={row.id}
-            className={`${
-              row.original?.type === "income"
-                ? "bg-green-100"
-                : row.original?.type === "expense"
-                  ? "bg-red-100"
-                  : ""
-            }`}
-          >
-            {row.getVisibleCells().map((cell) => (
-              <td
-                key={cell.id}
-                className="px-4 py-2 border border-gray-300 text-center align-middle"
-                style={{
-                  background: cell.getIsGrouped()
-                    ? "#0aff0082"
-                    : cell.getIsPlaceholder()
-                      ? "#ff000042"
-                      : undefined,
-                }}
+          </thead>
+          <tbody>
+            {table.getRowModel().rows.map((row) => (
+              <tr
+                key={row.id}
+                className={`${
+                  row.original?.type === "income"
+                    ? "bg-green-100"
+                    : row.original?.type === "expense"
+                      ? "bg-red-100"
+                      : ""
+                }`}
               >
-                {cell.getIsGrouped() ? (
-                  <button
-                    onClick={row.getToggleExpandedHandler()}
+                {row.getVisibleCells().map((cell) => (
+                  <td
+                    key={cell.id}
+                    className="px-4 py-2 border border-gray-300 text-center align-middle"
                     style={{
-                      cursor: row.getCanExpand() ? "pointer" : "normal",
+                      background: cell.getIsGrouped()
+                        ? "#0aff0082"
+                        : cell.getIsPlaceholder()
+                          ? "#ff000042"
+                          : undefined,
                     }}
                   >
-                    {row.getIsExpanded() ? "👇" : "👉"}{" "}
-                    {flexRender(cell.column.columnDef.cell, cell.getContext())}{" "}
-                    ({row.subRows.length})
-                  </button>
-                ) : cell.getIsPlaceholder() ? null : (
-                  flexRender(cell.column.columnDef.cell, cell.getContext())
-                )}
-              </td>
+                    {cell.getIsGrouped() ? (
+                      <button
+                        onClick={row.getToggleExpandedHandler()}
+                        style={{
+                          cursor: row.getCanExpand() ? "pointer" : "normal",
+                        }}
+                      >
+                        {row.getIsExpanded() ? "👇" : "👉"}{" "}
+                        {flexRender(
+                          cell.column.columnDef.cell,
+                          cell.getContext()
+                        )}{" "}
+                        ({row.subRows.length})
+                      </button>
+                    ) : cell.getIsPlaceholder() ? null : (
+                      flexRender(cell.column.columnDef.cell, cell.getContext())
+                    )}
+                  </td>
+                ))}
+              </tr>
             ))}
-          </tr>
-        ))}
-      </tbody>
-    </table>
+          </tbody>
+        </table>
+      )}
+    </div>
   );
 };

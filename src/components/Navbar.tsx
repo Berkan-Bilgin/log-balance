@@ -9,12 +9,12 @@ export function Navbar() {
   const { theme, setTheme } = useTheme();
 
   return (
-    <nav className="border-b">
+    <nav className="fixed top-0 left-0 w-full bg-white dark:bg-gray-900 border-b z-50">
       <div className="container mx-auto px-4 sm:px-6 lg:px-0">
         <div className="flex justify-between h-16">
           <div className="flex">
             <Link href="/" className="flex-shrink-0 flex items-center">
-              <span className="text-2xl font-bold">BudgetApp</span>
+              <span className="text-2xl font-bold">Log Balance</span>
             </Link>
           </div>
           <div className="flex items-center">

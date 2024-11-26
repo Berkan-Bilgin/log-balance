@@ -50,18 +50,18 @@ export const ExpenseProgressBar: React.FC<{ transactions: Transaction[] }> = ({
   };
 
   return (
-    <div className="w-full mx-auto mt-8 space-y-4">
-      <div className="flex justify-end mb-4">
+    <div className="w-full mx-auto mt-8 space-y-4 px-4">
+      <div className="flex justify-end mb-4 mt-20">
         <Notifications criticalExpenses={criticalExpenses} />
       </div>
 
-      <h2 className="text-center text-xl font-bold mb-4 text-red-500">
-        Gider Kategorileri - Progress Bar
+      <h2 className="text-center text-xl font-bold mb-4  text-red-500 dark:text-red-400">
+        Bütçe Limitleri - Uyarılar
       </h2>
 
       {categories.map((category) => {
         const spent = expenseData[category];
-        const limit = categoryLimits[category] || 100000; // Varsayılan limit 100,000
+        const limit = categoryLimits[category] || 10000; // Varsayılan limit 100,000
         const percentage = Math.min((spent / limit) * 100, 100);
 
         return (
@@ -84,7 +84,7 @@ export const ExpenseProgressBar: React.FC<{ transactions: Transaction[] }> = ({
             </div>
             <div className="w-full h-6 bg-gray-200 dark:bg-gray-700 rounded overflow-hidden">
               <div
-                className="h-full bg-red-500"
+                className="h-full bg-red-500 dark:bg-red-400"
                 style={{
                   width: `${percentage}%`,
                   transition: "width 0.3s ease",

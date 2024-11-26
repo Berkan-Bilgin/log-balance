@@ -91,7 +91,7 @@ export const PieChartExpense: React.FC<{
 
   return (
     <div className="w-full mx-auto mt-8">
-      <h2 className="text-center text-xl font-bold mb-4 text-red-500">
+      <h2 className="text-center text-xl font-bold mb-4 text-red-500 dark:text-red-400">
         Gider Dağılımı (Kategorilere Göre)
       </h2>
       <Pie data={data} options={options} />

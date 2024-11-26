@@ -13,7 +13,7 @@ export const AddTransactionButton: React.FC<AddTransactionButtonProps> = ({
   return (
     <Button variant="default" size="sm" onClick={onClick}>
       <Plus className="h-4 w-4 mr-2" />
-      Add Transaction
+      İşlem Ekle
     </Button>
   );
 };
