@@ -16,6 +16,7 @@ import { PieChart } from "@/components/PieChart";
 import { PieChartIncome } from "@/components/PieChartIncome";
 import { PieChartExpense } from "@/components/PieChartExpense";
 import { ExpenseProgressBar } from "@/components/ExpenseProgressBar";
+import { v4 as uuidv4 } from "uuid";
 import dayjs from "dayjs";
 
 const Home = () => {
@@ -39,16 +40,6 @@ const Home = () => {
     return isSameYear && isSameMonth;
   });
 
-  const handleAddTransaction = (newTransaction: Omit<Transaction, "id">) => {
-    const newTransactionWithId: Transaction = {
-      ...newTransaction,
-      id: (transactions.length + 1).toString(), // Otomatik ID
-    };
-
-    // Redux store'a yeni işlem ekle
-    dispatch(addTransaction(newTransactionWithId));
-  };
-
   return (
     <>
       <div className="container mx-auto">
@@ -59,7 +50,6 @@ const Home = () => {
 
       <div className="container mx-auto p-4">
         <div className="flex space-x-4 mb-4">
-          {/* Tarih Filtreleme UI */}
           <select
             value={filterDate.year}
             onChange={(e) =>
@@ -118,7 +108,7 @@ const Home = () => {
             dispatch(
               addTransaction({
                 ...newTransaction,
-                id: (transactions.length + 1).toString(),
+                id: uuidv4(),
               })
             )
           }
