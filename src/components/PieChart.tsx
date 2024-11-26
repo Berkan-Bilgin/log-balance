@@ -90,7 +90,7 @@ export const PieChart: React.FC = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 py-8 bg-blue-500">
       {/* Başlık */}
       <h1 className="text-2xl font-bold text-center mb-8">
         Gelir ve Gider Grafiği
@@ -109,7 +109,7 @@ export const PieChart: React.FC = () => {
       {/* Grafik Alanı */}
       <div
         ref={chartRef}
-        className="relative mx-auto md:w-2/3 lg:w-1/2 bg-red-500 p-4 shadow-md rounded-md"
+        className="relative mx-auto w-full bg-red-500 p-4 shadow-md rounded-md"
         style={{ height: "600px" }}
       >
         <Pie data={data} options={options} />

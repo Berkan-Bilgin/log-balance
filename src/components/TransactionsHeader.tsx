@@ -15,7 +15,6 @@ export const TransactionsHeader: React.FC<TransactionsHeaderProps> = ({
       <h2 className="text-lg font-bold text-gray-900 dark:text-white">
         Recent Transactions
       </h2>
-      <RemoveTransactionButton />
       <AddTransactionButton onClick={onAddClick} />
     </div>
   );

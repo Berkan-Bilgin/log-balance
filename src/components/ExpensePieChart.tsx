@@ -102,7 +102,7 @@ export const ExpensePieChart: React.FC = () => {
   };
 
   return (
-    <div className="w-full md:w-1/2 lg:w-1/3 mx-auto mt-8">
+    <div className="w-full mx-auto mt-8">
       <h2 className="text-center text-xl font-bold mb-4">
         Gider Dağılımı (Kategorilere Göre)
       </h2>

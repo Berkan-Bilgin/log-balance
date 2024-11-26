@@ -39,6 +39,17 @@ const Home = () => {
 
   return (
     <>
+      <div className="container mx-auto grid grid-cols-1 lg:grid-cols-2 gap-4 p-4">
+        <div>
+          <PieChartIncome />
+        </div>
+        <div>
+          <ExpensePieChart />
+        </div>
+      </div>
+
+      <hr />
+
       <TransactionsHeader onAddClick={() => setIsModalOpen(true)} />
       <TransactionList />
       <AddTransactionModal
@@ -47,9 +58,6 @@ const Home = () => {
         onAddTransaction={handleAddTransaction}
       />
       <TransactionChart />
-      <PieChart />
-      <PieChartIncome />
-      <ExpensePieChart />
     </>
   );
 };
