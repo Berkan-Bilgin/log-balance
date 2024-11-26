@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Transaction } from "@/data/mockData";
+import { mockTransactions } from "@/data/mockData";
 
 interface TransactionState {
   transactions: Transaction[];
 }
 
 const initialState: TransactionState = {
-  transactions: [], // Başlangıç durumu
+  transactions: mockTransactions, // Başlangıç durumu
 };
 
 const transactionSlice = createSlice({

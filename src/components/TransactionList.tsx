@@ -1,7 +1,12 @@
+"use client";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store/store";
-import { setTransactions, updateTransaction } from "@/store/transactionSlice";
+import {
+  setTransactions,
+  updateTransaction,
+  removeTransaction,
+} from "@/store/transactionSlice";
 import { mockTransactions, Transaction } from "@/data/mockData";
 import dayjs from "dayjs";
 import {
@@ -13,6 +18,7 @@ import {
   getExpandedRowModel,
   flexRender,
 } from "@tanstack/react-table";
+import { Edit, Save, X, Trash } from "lucide-react"; // İkonlar
 
 export const TransactionList = () => {
   const dispatch = useDispatch();
@@ -24,15 +30,17 @@ export const TransactionList = () => {
   const [editedRow, setEditedRow] = useState<Partial<Transaction>>({});
   const [grouping, setGrouping] = useState<GroupingState>([]);
 
-  useEffect(() => {
-    dispatch(setTransactions(mockTransactions));
-  }, [dispatch]);
-
   const handleEditClick = (rowId: string) => {
+    console.log("transactions", transactions);
     const row = transactions.find((t) => t.id === rowId);
+    console.log("row nedir", row);
     setEditingRowId(rowId);
     setEditedRow(row || {});
   };
+
+  useEffect(() => {
+    console.log("Transactions updated:", transactions);
+  }, [transactions]);
 
   const handleSaveClick = () => {
     if (editingRowId) {
@@ -45,6 +53,10 @@ export const TransactionList = () => {
   const handleCancelClick = () => {
     setEditingRowId(null);
     setEditedRow({});
+  };
+
+  const handleRemoveClick = (rowId: string) => {
+    dispatch(removeTransaction(rowId));
   };
 
   const handleInputChange = (
@@ -66,7 +78,7 @@ export const TransactionList = () => {
               type="text"
               value={editedRow.category || ""}
               onChange={(e) => handleInputChange("category", e.target.value)}
-              className="border w-full px-2 py-1"
+              className="border text-center w-full px-2 py-1"
             />
           ) : (
             info.getValue()
@@ -86,7 +98,7 @@ export const TransactionList = () => {
                   : (info.getValue() as string)
               }
               onChange={(e) => handleInputChange("date", e.target.value)}
-              className="border w-full px-2 py-1"
+              className="border text-center w-full px-2 py-1"
             />
           ) : info.getValue() ? (
             dayjs(info.getValue() as string).format("DD/MM/YYYY")
@@ -108,7 +120,7 @@ export const TransactionList = () => {
                   e.target.value as "income" | "expense"
                 )
               }
-              className="border w-full px-2 py-1"
+              className="border text-center w-full px-2 py-1"
             >
               <option value="income">Gelir</option>
               <option value="expense">Gider</option>
@@ -131,7 +143,7 @@ export const TransactionList = () => {
               type="text"
               value={editedRow.description || ""}
               onChange={(e) => handleInputChange("description", e.target.value)}
-              className="border w-full px-2 py-1"
+              className="border text-center w-full px-2 py-1"
             />
           ) : (
             info.getValue()
@@ -149,7 +161,7 @@ export const TransactionList = () => {
               onChange={(e) =>
                 handleInputChange("amount", Number(e.target.value))
               }
-              className="border w-full px-2 py-1"
+              className="border text-center w-full px-2 py-1"
             />
           ) : (
             `${info.getValue()}₺`
@@ -161,33 +173,53 @@ export const TransactionList = () => {
         cell: (info) =>
           !info.row.getIsGrouped() ? (
             editingRowId === info.row.original?.id ? (
-              <div className="flex space-x-2">
+              <div className="flex justify-center space-x-4 ">
                 <button
                   onClick={handleSaveClick}
-                  className="px-2 py-1 bg-green-500 text-white rounded"
+                  className="px-2 py-1 bg-green-500 text-white rounded flex items-center"
                 >
+                  <Save className="w-4 h-4 mr-1" />
                   Kaydet
                 </button>
                 <button
                   onClick={handleCancelClick}
-                  className="px-2 py-1 bg-red-500 text-white rounded"
+                  className="px-2 py-1 bg-red-500 text-white rounded flex items-center"
                 >
+                  <X className="w-4 h-4 mr-1" />
                   İptal
                 </button>
               </div>
             ) : (
-              <button
-                onClick={() => handleEditClick(info.row.original?.id as string)}
-                className="px-2 py-1 bg-blue-500 text-white rounded"
-              >
-                Düzenle
-              </button>
+              <div className="flex justify-center space-x-4">
+                <button
+                  onClick={() =>
+                    handleEditClick(info.row.original?.id as string)
+                  }
+                  className="px-2 py-1 bg-blue-500 text-white rounded flex items-center"
+                >
+                  <Edit className="w-4 h-4 mr-1" />
+                  Düzenle
+                </button>
+                <button
+                  onClick={() =>
+                    handleRemoveClick(info.row.original?.id as string)
+                  }
+                  className="px-2 py-1 bg-gray-500 text-white rounded flex items-center"
+                >
+                  <Trash className="w-4 h-4 mr-1" />
+                  Sil
+                </button>
+              </div>
             )
           ) : null,
       },
     ],
     [editedRow, editingRowId]
   );
+
+  if (!transactions.length) {
+    return <>Loading...</>;
+  }
 
   const table = useReactTable({
     data: transactions,
