@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import localFont from "next/font/local";
 import { ThemeProvider } from "next-themes";
 import { Navbar } from "@/components/Navbar";
 import { ClientProvider } from "./ClientProvider";
