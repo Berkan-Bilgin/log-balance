@@ -1,4 +1,4 @@
-"use client"; // Bu dosyanın bir Client Component olduğunu belirtir
+"use client";
 
 import React from "react";
 import { Provider } from "react-redux";
