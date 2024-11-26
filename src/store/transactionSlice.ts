@@ -1,12 +1,13 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { Transaction } from "@/data/mockData";
+import { mockTransactions } from "@/data/mockData";
 
 interface TransactionState {
   transactions: Transaction[];
 }
 
 const initialState: TransactionState = {
-  transactions: [], // Başlangıç durumu
+  transactions: mockTransactions, // Başlangıç durumu
 };
 
 const transactionSlice = createSlice({
@@ -34,6 +35,22 @@ const transactionSlice = createSlice({
         state.transactions.pop(); // Son elemanı kaldır
       }
     },
+    updateTransaction(
+      state,
+      action: PayloadAction<Partial<Transaction> & { id: string }>
+    ) {
+      const { id, ...changes } = action.payload;
+      const index = state.transactions.findIndex(
+        (transaction) => transaction.id === id
+      );
+
+      if (index !== -1) {
+        state.transactions[index] = {
+          ...state.transactions[index],
+          ...changes,
+        };
+      }
+    },
   },
 });
 
@@ -42,6 +59,7 @@ export const {
   addTransaction,
   removeTransaction,
   removeLastTransaction,
+  updateTransaction,
 } = transactionSlice.actions;
 
 export default transactionSlice.reducer;

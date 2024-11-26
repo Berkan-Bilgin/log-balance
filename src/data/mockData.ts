@@ -1,10 +1,12 @@
+import dayjs from "dayjs";
+
 export type Transaction = {
   id: string; // Benzersiz bir id
   description: string; // Gelir veya gider açıklaması
   amount: number; // Tutar
   type: "income" | "expense"; // Gelir veya gider tipi
   category: string; // Gelir veya gider kategorisi
-  date: string; // Tarih (ISO formatında)
+  date: string; // Tarih (ISO formatında string)
 };
 
 export const mockTransactions: Transaction[] = [
@@ -14,7 +16,7 @@ export const mockTransactions: Transaction[] = [
     amount: 6000,
     type: "income",
     category: "Çalışma Geliri",
-    date: "2024-11-01",
+    date: dayjs("2024-11-01").toISOString(),
   },
   {
     id: "2",
@@ -22,7 +24,7 @@ export const mockTransactions: Transaction[] = [
     amount: -1500,
     type: "expense",
     category: "Kira",
-    date: "2024-11-02",
+    date: dayjs("2024-11-02").toISOString(),
   },
   {
     id: "3",
@@ -30,7 +32,7 @@ export const mockTransactions: Transaction[] = [
     amount: -750,
     type: "expense",
     category: "Market",
-    date: "2024-11-03",
+    date: dayjs("2024-11-03").toISOString(),
   },
   {
     id: "4",
@@ -38,7 +40,7 @@ export const mockTransactions: Transaction[] = [
     amount: 2000,
     type: "income",
     category: "Freelance",
-    date: "2024-11-04",
+    date: dayjs("2024-11-04").toISOString(),
   },
   {
     id: "5",
@@ -46,7 +48,7 @@ export const mockTransactions: Transaction[] = [
     amount: -300,
     type: "expense",
     category: "Faturalar",
-    date: "2024-11-05",
+    date: dayjs("2024-11-05").toISOString(),
   },
   {
     id: "6",
@@ -54,7 +56,7 @@ export const mockTransactions: Transaction[] = [
     amount: -200,
     type: "expense",
     category: "Faturalar",
-    date: "2024-11-06",
+    date: dayjs("2024-11-06").toISOString(),
   },
   {
     id: "7",
@@ -62,7 +64,7 @@ export const mockTransactions: Transaction[] = [
     amount: -150,
     type: "expense",
     category: "Faturalar",
-    date: "2024-11-07",
+    date: dayjs("2024-11-07").toISOString(),
   },
   {
     id: "8",
@@ -70,7 +72,7 @@ export const mockTransactions: Transaction[] = [
     amount: 400,
     type: "income",
     category: "Satış Geliri",
-    date: "2024-11-08",
+    date: dayjs("2024-11-08").toISOString(),
   },
   {
     id: "9",
@@ -78,7 +80,7 @@ export const mockTransactions: Transaction[] = [
     amount: -600,
     type: "expense",
     category: "Ulaşım",
-    date: "2024-11-09",
+    date: dayjs("2024-11-09").toISOString(),
   },
   {
     id: "10",
@@ -86,7 +88,7 @@ export const mockTransactions: Transaction[] = [
     amount: -250,
     type: "expense",
     category: "Yemek",
-    date: "2024-11-10",
+    date: dayjs("2024-11-10").toISOString(),
   },
   {
     id: "11",
@@ -94,7 +96,7 @@ export const mockTransactions: Transaction[] = [
     amount: 3500,
     type: "income",
     category: "Freelance",
-    date: "2024-11-11",
+    date: dayjs("2024-11-11").toISOString(),
   },
   {
     id: "12",
@@ -102,7 +104,7 @@ export const mockTransactions: Transaction[] = [
     amount: -300,
     type: "expense",
     category: "Spor",
-    date: "2024-11-12",
+    date: dayjs("2024-11-12").toISOString(),
   },
   {
     id: "13",
@@ -110,7 +112,7 @@ export const mockTransactions: Transaction[] = [
     amount: -500,
     type: "expense",
     category: "Ofis Giderleri",
-    date: "2024-11-13",
+    date: dayjs("2024-11-13").toISOString(),
   },
   {
     id: "14",
@@ -118,7 +120,7 @@ export const mockTransactions: Transaction[] = [
     amount: 4500,
     type: "income",
     category: "Hizmet Geliri",
-    date: "2024-11-14",
+    date: dayjs("2024-11-14").toISOString(),
   },
   {
     id: "15",
@@ -126,7 +128,7 @@ export const mockTransactions: Transaction[] = [
     amount: -200,
     type: "expense",
     category: "Faturalar",
-    date: "2024-11-15",
+    date: dayjs("2024-11-15").toISOString(),
   },
   {
     id: "16",
@@ -134,7 +136,7 @@ export const mockTransactions: Transaction[] = [
     amount: 1200,
     type: "income",
     category: "Satış Geliri",
-    date: "2024-11-16",
+    date: dayjs("2024-11-16").toISOString(),
   },
   {
     id: "17",
@@ -142,7 +144,7 @@ export const mockTransactions: Transaction[] = [
     amount: -1800,
     type: "expense",
     category: "Borç",
-    date: "2024-11-17",
+    date: dayjs("2024-11-17").toISOString(),
   },
   {
     id: "18",
@@ -150,7 +152,7 @@ export const mockTransactions: Transaction[] = [
     amount: 600,
     type: "income",
     category: "Ek Gelir",
-    date: "2024-11-18",
+    date: dayjs("2024-11-18").toISOString(),
   },
   {
     id: "19",
@@ -158,7 +160,7 @@ export const mockTransactions: Transaction[] = [
     amount: -2500,
     type: "expense",
     category: "Eğlence",
-    date: "2024-11-19",
+    date: dayjs("2024-11-19").toISOString(),
   },
   {
     id: "20",
@@ -166,6 +168,6 @@ export const mockTransactions: Transaction[] = [
     amount: 200,
     type: "income",
     category: "Ek Gelir",
-    date: "2024-11-20",
+    date: dayjs("2024-11-20").toISOString(),
   },
 ];
