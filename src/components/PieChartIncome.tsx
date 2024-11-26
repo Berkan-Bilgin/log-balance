@@ -3,18 +3,17 @@
 import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import ChartDataLabels from "chartjs-plugin-datalabels";
 import { useTheme } from "next-themes";
+import { Transaction } from "@/data/mockData";
+import { AlertCircle } from "lucide-react"; // Lucide React'ten ikon
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-export const PieChartIncome: React.FC = () => {
+export const PieChartIncome: React.FC<{ transactions: Transaction[] }> = ({
+  transactions,
+}) => {
   const { theme } = useTheme(); // Mevcut temayı al
-  const transactions = useSelector(
-    (state: RootState) => state.transactions.transactions
-  );
 
   // Gelirleri kategorilere göre gruplandır
   const incomeData = transactions
@@ -30,6 +29,23 @@ export const PieChartIncome: React.FC = () => {
 
   const categories = Object.keys(incomeData);
   const amounts = Object.values(incomeData);
+
+  // Eğer veri yoksa hata mesajı göster
+  if (categories.length === 0 || amounts.length === 0) {
+    return (
+      <div className="w-full mx-auto mt-8 text-center p-4 border border-blue-300 rounded bg-blue-50 dark:bg-blue-900">
+        <div className="flex flex-col items-center">
+          <AlertCircle className="w-8 h-8 text-blue-500 dark:text-blue-300 mb-2" />
+          <h2 className="text-xl font-bold text-blue-600 dark:text-blue-300">
+            Veri Bulunamadı
+          </h2>
+          <p className="text-blue-500 dark:text-blue-200">
+            Gösterilecek gelir verisi bulunamadı. Lütfen işlem ekleyin.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Dinamik olarak farklı renkler üret
   const backgroundColors = generateDistinctColors(categories.length);

@@ -4,17 +4,16 @@ import React from "react";
 import { Pie } from "react-chartjs-2";
 import { Chart as ChartJS, ArcElement, Tooltip, Legend } from "chart.js";
 import ChartDataLabels from "chartjs-plugin-datalabels";
-import { useSelector } from "react-redux";
-import { RootState } from "@/store/store";
 import { useTheme } from "next-themes";
+import { Transaction } from "@/data/mockData";
+import { AlertCircle } from "lucide-react"; // Lucide React'ten ikon
 
 ChartJS.register(ArcElement, Tooltip, Legend, ChartDataLabels);
 
-export const PieChartExpense: React.FC = () => {
+export const PieChartExpense: React.FC<{
+  transactions: Transaction[];
+}> = ({ transactions }) => {
   const { theme } = useTheme();
-  const transactions = useSelector(
-    (state: RootState) => state.transactions.transactions
-  );
 
   // Giderleri kategorilere göre gruplandır
   const expenseData = transactions
@@ -30,6 +29,23 @@ export const PieChartExpense: React.FC = () => {
 
   const categories = Object.keys(expenseData);
   const amounts = Object.values(expenseData);
+
+  // Eğer veri yoksa hata mesajı göster
+  if (categories.length === 0 || amounts.length === 0) {
+    return (
+      <div className="w-full mx-auto mt-8 text-center p-4 border border-red-300 rounded bg-red-50 dark:bg-red-900">
+        <div className="flex flex-col items-center">
+          <AlertCircle className="w-8 h-8 text-red-500 dark:text-red-300 mb-2" />
+          <h2 className="text-xl font-bold text-red-600 dark:text-red-300">
+            Veri Bulunamadı
+          </h2>
+          <p className="text-red-500 dark:text-red-200">
+            Gösterilecek gider verisi bulunamadı. Lütfen işlem ekleyin.
+          </p>
+        </div>
+      </div>
+    );
+  }
 
   // Dinamik olarak farklı renkler üret
   const backgroundColors = generateDistinctColors(categories.length);
@@ -83,6 +99,7 @@ export const PieChartExpense: React.FC = () => {
   );
 };
 
+// Eşit aralıklı farklı renkler üretmek için fonksiyon
 const generateDistinctColors = (
   numColors: number,
   isLighter: boolean = false
