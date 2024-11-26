@@ -54,10 +54,12 @@ const Home = () => {
           <ExpenseProgressBar transactions={transactions} />
         </div>
 
-        <hr className="my-4" />
+        <hr className="mt-4" />
 
-        <div className="container mx-auto">
-          <FilteredCharts />
+        <div className="bg-gray-100 dark:bg-gray-700">
+          <div className="container mx-auto ">
+            <FilteredCharts />
+          </div>
         </div>
 
         <hr />

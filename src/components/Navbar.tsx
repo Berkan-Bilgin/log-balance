@@ -27,10 +27,11 @@ export function Navbar() {
                 setTheme(resolvedTheme === "dark" ? "light" : "dark")
               }
             >
-              <Sun className="h-6 w-6 rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
-              <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <Sun className="h-6 w-6 rotate-0 text-yellow-700 scale-150 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-6 w-6 rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-150" />
               <span className="sr-only">Toggle Theme</span>
             </Button>
+            <p>{resolvedTheme}</p>
           </div>
         </div>
       </div>
